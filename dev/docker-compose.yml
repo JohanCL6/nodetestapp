@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  frontend:
+    build: ./dev
+    volumes:
+      - ./:/app
+      - ./.npmrc:/root/.npmrc
+    ports:
+      - "4200:4200"
+    environment:
+      CHROME_ headless: true
+  node:
+    image: node:16-alpine
+    working_dir: /app
+    command: npm run start
+    volumes:
+      - ./:/app
+      - ./.npmrc:/root/.npmrc
+    ports:
+      - "3000:3000"
+  logs:
+    image: elastic/kibana:7.15.2
+    ports:
+      - "5601:5601"
+    volumes:
+      - ./logs:/var/lib/elasticsearch
